@@ -2,7 +2,7 @@ function jsonDiff(actualValue, expectedValue) {
     var output = internalJsonDiff(actualValue, expectedValue, "");
     return {
         equals : output.equals,
-        differences: output.differences
+        differences: output.differences.trim()
     };
 }
 
