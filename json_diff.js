@@ -11,7 +11,10 @@ function internalJsonDiff(actualValue, expectedValue, key) {
     if (actualValue === undefined) {
         differences += "key '" + key + "' missing in actual json\n";
     } else if (expectedValue instanceof RegExp) {
-        if (!actualValue.match(expectedValue)) {
+        if (typeof actualValue !== "string") {
+            actualValue = actualValue.toString();
+        }
+        if(!actualValue.match(expectedValue)) {
             differences += "key '" + key + "' has regex mismatch: expected to match the regex = " + expectedValue + " actual value = " + actualValue + "\n";
         }
     } else if (typeof expectedValue !== typeof actualValue){
@@ -21,11 +24,11 @@ function internalJsonDiff(actualValue, expectedValue, key) {
     }  else if(!Array.isArray(expectedValue) && Array.isArray(actualValue)) {
         differences += "key '" + key + "' has type mismatch: expected = object actual = array\n";
     }  else {
-        if (!(typeof expectedValue === 'object')) {
+        if (!(typeof expectedValue === "object")) {
             if (expectedValue != actualValue) {
                 differences += "key '" + key + "' has value mismatch: expected = " + expectedValue + " actual = " + actualValue + "\n";
             }
-        } else if (typeof expectedValue === 'object' && !(Array.isArray(expectedValue))) {
+        } else if (typeof expectedValue === "object" && !(Array.isArray(expectedValue))) {
             for (var innerKey of Object.keys(expectedValue)) {
                 var internalOutput = internalJsonDiff(actualValue[innerKey], expectedValue[innerKey], key === "" ? innerKey : key + "." + innerKey);
                 differences += internalOutput.differences;
