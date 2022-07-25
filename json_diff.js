@@ -1,3 +1,10 @@
+const { assert } = require("chai");
+
+function assertEquals(actualValue, expectedValue) {
+    var output = jsonDiff(actualValue, expectedValue, "");
+    assert(output.equals, output.differences)
+}
+
 function jsonDiff(actualValue, expectedValue) {
     var output = internalJsonDiff(actualValue, expectedValue, "");
     return {
