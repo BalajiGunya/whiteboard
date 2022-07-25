@@ -10,6 +10,10 @@ function internalJsonDiff(actualValue, expectedValue, key) {
     var differences = "";
     if (actualValue === undefined) {
         differences += "key '" + key + "' missing in actual json\n";
+    } else if (expectedValue instanceof RegExp) {
+        if (!actualValue.match(expectedValue)) {
+            differences += "key '" + key + "' has regex mismatch: expected to match the regex = " + expectedValue + " actual value = " + actualValue + "\n";
+        }
     } else if (typeof expectedValue !== typeof actualValue){
         differences += "key '" + key + "' has type mismatch: expected = " + typeof expectedValue + " actual = " + typeof actualValue + "\n";
     } else if(Array.isArray(expectedValue) && !Array.isArray(actualValue)) {
